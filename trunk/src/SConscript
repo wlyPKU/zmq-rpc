@@ -1,0 +1,23 @@
+from glob import glob
+Import('env')
+
+src_env = env.Clone()
+src_env['extension'] = 'cpp'
+src_env['srcroot'] += '/src'
+src_env['objroot'] += '/src'
+
+Export('src_env')
+
+src_files = [
+  'lookup3.cpp',
+  'zrpc_utility.cpp',
+  'zrpc_channel.cpp',
+  'zrpc_server.cpp',
+]
+
+src_header_files = [
+]
+src = src_env.StaticLibrary('zrpc', src_files)
+env.Install("/usr/local/lib", src)
+env.Install("/usr/local/include/src", src_header_files)
+env.Alias('install', ['/usr/local/lib', '/usr/local/include/src'])

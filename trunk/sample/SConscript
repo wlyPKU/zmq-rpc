@@ -1,0 +1,22 @@
+Import('env')
+
+sample_env = env.Clone()
+sample_env['objroot'] += '/sample'
+sample_env['srcroot'] += '/src'
+sample_env['extension'] = 'cpp'
+sample_env.Append(CPPPATH=[sample_env['srcroot'],
+  env['objroot'] + '/sample',
+  env['objroot'] + '/src', ])
+sample_env.Append(LIBPATH=[env['objroot']+'/src',])
+sample_env.Prepend(LIBS=
+  [
+    'zrpc',
+  ])
+
+env.ProtocolBuffer('echo.proto')
+sample_src_files = [
+  'echo_client',
+  'echo_server',
+]
+for file in sample_src_files:
+  sample_env.Program(file, [file + '.cpp', 'echo.pb.cc'])
