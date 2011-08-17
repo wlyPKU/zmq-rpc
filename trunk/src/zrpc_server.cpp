@@ -9,10 +9,28 @@
 #include "zrpc_server.h"
 #include "zrpc_utility.h"
 namespace zrpc {
-Server::Server(const string &host, int port)
+struct RpcMethod {
+ public:
+  RpcMethod(gpb::Service *service,
+            const gpb::Message *request,
+            const gpb::Message *response, 
+            const gpb::MethodDescriptor *method)
+    : service_(service),
+    request_(request),
+    response_(response),
+    method_(method) {
+    }
+
+  gpb::Service *service_;
+  const gpb::Message *request_;
+  const gpb::Message *response_;
+  const gpb::MethodDescriptor *method_;
+};
+
+Server::Server(const string &host, int port, int io_threads)
   : zmq_context_(NULL),
     zmq_socket_(NULL) {
-  zmq_context_ = zmq_init(1);
+  zmq_context_ = zmq_init(io_threads);
   zmq_socket_ = zmq_socket(zmq_context_, ZMQ_REP);
   char addr[128];
   snprintf(addr, sizeof(addr), "tcp://%s:%d", host.c_str(), port);

@@ -12,27 +12,10 @@
 #include "zrpc_base.h"
 using std::map;
 namespace zrpc {
-struct RpcMethod {
- public:
-  RpcMethod(gpb::Service *service,
-            const gpb::Message *request,
-            const gpb::Message *response, 
-            const gpb::MethodDescriptor *method)
-    : service_(service),
-    request_(request),
-    response_(response),
-    method_(method) {
-    }
-
-  gpb::Service *service_;
-  const gpb::Message *request_;
-  const gpb::Message *response_;
-  const gpb::MethodDescriptor *method_;
-};
-
+struct RpcMethod;
 class Server {
  public:
-  Server(const string &host, int port);
+  Server(const string &host, int port, int io_threads);
 
   ~Server();
 
