@@ -26,7 +26,7 @@ class EchoServiceImpl : public echo::EchoService {
 };
 
 int main(int argc, char *argv[]) {
-  Server rpc_server("127.0.0.1", 21118);
+  Server rpc_server("127.0.0.1", 21118, 1);
   gpb::Service *service = new EchoServiceImpl();
   rpc_server.RegisterService(service);
   rpc_server.Start();
